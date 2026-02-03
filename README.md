@@ -27,7 +27,7 @@ Follow these steps to run the project locally in your environment (e.g., Intelli
 
 1. **Clone the repository**:
    ```bash
-   git clone [https://github.com/Ujjawal-Bisht/MarketPlace-1](https://github.com/Ujjawal-Bisht/MarketPlace-1)
+   git clone [https://github.com/shraddha1603/EcoSwap]
    ```
 
 2. Initialize Virtual Environment
