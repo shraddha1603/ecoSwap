@@ -1,0 +1,50 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<div style="max-width: 1000px; margin: 40px auto; padding: 0 20px; font-family: 'Inter', sans-serif;">
+    <h2 style="color: #2d5a27; display: flex; align-items: center; gap: 10px; font-size: 28px; margin-bottom: 10px;">
+        Eco-Finder: Recycling Centers 📍
+    </h2>
+    <p style="color: #666; margin-bottom: 30px;">
+        Find nearby locations to drop off E-waste, clothes, or donations.
+    </p>
+
+    <div id="map" style="
+        height: 550px; 
+        border-radius: 20px; 
+        border: 1px solid #e0e0e0; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    "></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([28.6139, 77.2090], 11); //Delhi Center
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    {% for center in centers %}
+        L.marker([{{ center.latitude }}, {{ center.longitude }}])
+            .addTo(map)
+            .bindPopup(`
+                <div style="min-width: 200px; padding: 5px;">
+                    <strong style="color: #2d5a27; font-size: 16px; display: block; margin-bottom: 4px;">{{ center.name }}</strong>
+                    <span style="display: inline-block; background: #f0f7f0; color: #2d5a27; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+                        {{ center.get_center_type_display }}
+                    </span>
+                    <p style="margin: 5px 0; color: #555; font-size: 14px;">📞 {{ center.contact_number }}</p>
+                    
+                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ center.latitude }},{{ center.longitude }}" 
+                       target="_blank" 
+                       style="display: block; margin-top: 12px; background: #2d5a27; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px;">
+                       Get Directions
+                    </a>
+                </div>
+            `);
+    {% endfor %}
+</script>
+{% endblock %}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EcoSwap 🌿{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary-green: #2d5a27;
+        --accent-green: #4caf50;
+        --bg-light: #f4f9f4;
+        --white: #white;
+      }
+
+      body {
+        background: var(--bg-light);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        margin: 0;
+        color: #333;
+      }
+
+      nav {
+        background: var(--primary-green);
+        color: white;
+        padding: 0 50px;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        color: white;
+        text-decoration: none;
+        font-size: 24px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .user-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .btn-register-white {
+        background: white;
+        color: var(--primary-green) !important;
+        padding: 8px 18px !important;
+        border-radius: 8px;
+        font-weight: 700 !important;
+      }
+
+      .btn-logout-red {
+        background: none;
+        border: none;
+        color: #ff9999;
+        cursor: pointer;
+        font-weight: bold;
+        font-family: inherit;
+        font-size: 15px;
+        transition: 0.3s;
+      }
+
+      .btn-logout-red:hover {
+        color: #ff6666;
+      }
+
+      .container {
+        padding: 40px 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .alert {
+        padding: 15px;
+        background: #d4edda;
+        color: #155724;
+        text-align: center;
+        border-bottom: 2px solid #c3e6cb;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav>
+      <a href="{% url 'home' %}" class="logo">EcoSwap 🌿</a>
+
+      <div class="nav-links">
+        <a href="{% url 'item_list' %}">Browse</a>
+        
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}">Dashboard</a>
+          <a href="{% url 'my_listings' %}">My Listings</a>
+          <a href="{% url 'add_item' %}">+ Post Item</a>
+          <a href="{% url 'stories' %}">Stories</a>
+          
+          <a href="{% url 'centers:map_view' %}">Centers</a>
+          
+          <a href="{% url 'profile' %}" class="user-badge" style="text-decoration: none; color: inherit; display: inline-block;">Hi, {{ user.username }}!</a>
+
+          <form action="{% url 'logout' %}" method="post" style="display: inline">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout-red">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'register' %}" class="btn-register-white">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+
+  </body>
+</html>
